@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Previsão de Atraso de Voos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+  <script src="assets/script.js" defer></script>
+</head>
+<body>
+  <main class="container">
+    <section id="hero">
+      <h1>Previsão de Atraso de Voos</h1>
+      <p>Insira os dados do voo para calcular a probabilidade de atraso utilizando nosso modelo de Machine Learning.</p>
+    </section>
+
+    <section id="app-grid">
+      <div id="form-card" class="card">
+        <h2>Dados do Voo</h2>
+        <form id="prediction-form">
+          <label>Airline
+            <input type="text" id="airline" required>
+          </label>
+
+          <label>Origin
+            <input type="text" id="origin_airport" required>
+          </label>
+
+          <label>Destination
+            <input type="text" id="destination_airport" required>
+          </label>
+
+          <label>Data e Hora
+            <input type="datetime-local" id="departure_datetime" required>
+          </label>
+
+          <div class="button-group">
+            <button type="submit" id="predict-btn" class="btn-primary">
+              <span class="btn-text">Prever Atraso</span>
+              <span class="loader hidden"></span>
+            </button>
+            <button type="button" id="clear-btn" class="btn-outline">Limpar</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="results-area" class="results-empty">
+        Faça uma previsão para visualizar os resultados.
+      </div>
+    </section>
+  </main>
+</body>
+</html>
