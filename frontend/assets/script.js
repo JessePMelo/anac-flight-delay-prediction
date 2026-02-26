@@ -7,31 +7,7 @@
   const btnText = predictBtn.querySelector(".btn-text");
 
   function formatDateTime(value) {
-    const parts = value.split("T");
-    if (parts.length !== 2) return "";
-    return parts[0] + " " + parts[1] + ":00";
-  }
-
-  function simulatePrediction(inputData) {
-    return new Promise(function (resolve) {
-      setTimeout(function () {
-        resolve({
-          prediction: 1,
-          label: "Delayed",
-          probability_delay: 0.53,
-          probability_no_delay: 0.47,
-          threshold_used: 0.5,
-          departure_datetime: inputData.departure_datetime,
-          top_factors: [
-            { feature: "day_of_week", value: 5, impact: -0.8, direction: "decrease_delay" },
-            { feature: "hour_delay_rate", value: 0.2, impact: 0.4, direction: "increase_delay" },
-            { feature: "origin_volume", value: 200000, impact: 0.3, direction: "increase_delay" },
-            { feature: "is_holiday", value: 0, impact: -0.2, direction: "decrease_delay" },
-            { feature: "airline_GLO", value: "GLO", impact: 0.15, direction: "increase_delay" }
-          ]
-        });
-      }, 1500);
-    });
+    return new Date(value).toISOString();
   }
 
   function buildWidthClass(percent) {
@@ -107,12 +83,34 @@
     loader.classList.remove("hidden");
     btnText.textContent = "Prevendo...";
 
-    simulatePrediction(inputData).then(function (data) {
-      renderResults(data);
-      predictBtn.disabled = false;
-      loader.classList.add("hidden");
-      btnText.textContent = "Prever Atraso";
-    });
+    fetch("/api/predict", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(inputData)
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Erro na requisição: " + response.status);
+        }
+        return response.json();
+      })
+      .then(function (data) {
+        renderResults(data);
+      })
+      .catch(function (error) {
+        resultsArea.innerHTML =
+          '<div class="card"><h2>Erro</h2><p>' +
+          error.message +
+          '</p></div>';
+        console.error("Erro:", error);
+      })
+      .finally(function () {
+        predictBtn.disabled = false;
+        loader.classList.add("hidden");
+        btnText.textContent = "Prever Atraso";
+      });
   });
 
   clearBtn.addEventListener("click", function () {
