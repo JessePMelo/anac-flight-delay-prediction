@@ -3,41 +3,128 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Previsão de Atraso de Voos</title>
+
+  <!-- SEO Básico -->
+  <title>Radar de Atrasos | Previsão de Atraso de Voos com Inteligência Artificial</title>
+  <meta name="description" content="Radar de Atrasos é uma aplicação de Machine Learning para previsão de atraso de voos. Analise a probabilidade de atraso aéreo com explicabilidade SHAP e modelo preditivo desenvolvido por Jessé Melo.">
+  <meta name="author" content="Jessé Melo">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#3b5bdb">
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://radardeatrasos.com/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Radar de Atrasos | Previsão Inteligente de Voos">
+  <meta property="og:description" content="Ferramenta de previsão de atraso de voos baseada em Machine Learning com explicabilidade SHAP.">
+  <meta property="og:url" content="https://radardeatrasos.com/">
+  <meta property="og:site_name" content="Radar de Atrasos">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Radar de Atrasos | Previsão Inteligente de Voos">
+  <meta name="twitter:description" content="Aplicação de análise preditiva para estimar a probabilidade de atraso aéreo com Machine Learning.">
+
+  <!-- Fonte -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="assets/styles.css">
   <script src="assets/script.js" defer></script>
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "name": "Radar de Atrasos",
+        "url": "https://radardeatrasos.com",
+        "description": "Aplicação de previsão de atraso de voos utilizando Machine Learning e técnicas de explicabilidade SHAP."
+      },
+      {
+        "@type": "Person",
+        "name": "Jessé Melo",
+        "url": "https://radardeatrasos.com",
+        "sameAs": [
+          "https://www.linkedin.com/in/jessepmelo",
+          "https://github.com/JessePMelo"
+        ],
+        "jobTitle": "Cientista da Computação",
+        "knowsAbout": [
+          "Machine Learning",
+          "Análise Preditiva",
+          "Modelagem Estatística",
+          "Inteligência Artificial",
+          "Explicabilidade SHAP"
+        ]
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "Radar de Atrasos",
+        "applicationCategory": "WebApplication",
+        "operatingSystem": "Web",
+        "description": "Sistema de previsão de atraso de voos baseado em modelo de Machine Learning com análise de probabilidade e explicabilidade.",
+        "creator": {
+          "@type": "Person",
+          "name": "Jessé Melo"
+        }
+      },
+      {
+        "@type": "EducationalOccupationalProgram",
+        "name": "Oracle Next Education - Machine Learning",
+        "description": "Projeto aplicado de Machine Learning focado em análise preditiva de atraso de voos."
+      }
+    ]
+  }
+  </script>
+
 </head>
+
 <body>
-  <main class="container">
+
+  <header class="site-header">
+    <div class="container header-content">
+      <div class="logo">Radar de Atrasos</div>
+      <div class="header-subtitle">Previsão Inteligente de Atrasos Aéreos</div>
+    </div>
+  </header>
+
+  <main class="container" role="main">
+
     <section id="hero">
-      <h1>Previsão de Atraso de Voos</h1>
-      <p>Insira os dados do voo para calcular a probabilidade de atraso utilizando nosso modelo de Machine Learning.</p>
+      <h1>Previsão de Atraso de Voos com Machine Learn</h1>
+      <p>
+        Analise a probabilidade de atraso aéreo utilizando um modelo de Machine Learning
+        com técnicas de explicabilidade SHAP para entender os principais fatores que
+        influenciam atrasos de voos.
+      </p>
     </section>
 
     <section id="app-grid">
       <div id="form-card" class="card">
         <h2>Dados do Voo</h2>
         <form id="prediction-form">
-          <label>Airline
+          <label for="airline">Companhia Aérea
             <input type="text" id="airline" required>
           </label>
 
-          <label>Origin
+          <label for="origin_airport">Aeroporto de Origem
             <input type="text" id="origin_airport" required>
           </label>
 
-          <label>Destination
+          <label for="destination_airport">Aeroporto de Destino
             <input type="text" id="destination_airport" required>
           </label>
 
-          <label>Data e Hora
+          <label for="departure_datetime">Data e Hora
             <input type="datetime-local" id="departure_datetime" required>
           </label>
 
           <div class="button-group">
-            <button type="submit" id="predict-btn" class="btn-primary">
+            <button type="submit" id="predict-btn" class="btn-primary" aria-label="Executar previsão de atraso">
               <span class="btn-text">Prever Atraso</span>
               <span class="loader hidden"></span>
             </button>
@@ -50,6 +137,32 @@
         Faça uma previsão para visualizar os resultados.
       </div>
     </section>
+
+    <!-- Seção Institucional (E-E-A-T) -->
+    <section id="about" style="margin-top:60px;">
+      <h2>Sobre o Projeto</h2>
+      <p>
+        O Radar de Atrasos é uma aplicação web desenvolvida por Jessé Melo,
+        cientista da computação, como projeto aplicado de Machine Learning no
+        contexto do Oracle Next Education. O sistema utiliza técnicas de análise
+        preditiva para estimar a probabilidade de atraso de voos, incorporando
+        métodos de explicabilidade (SHAP) para interpretar os fatores que
+        impactam o resultado.
+      </p>
+      <p>
+        A aplicação não armazena dados pessoais dos usuários, funcionando apenas
+        como ferramenta de simulação e análise preditiva educacional.
+      </p>
+    </section>
+
   </main>
+
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <div>© 2026 Radar de Atrasos</div>
+      <div>Desenvolvido por Jessé Melo</div>
+    </div>
+  </footer>
+
 </body>
 </html>
