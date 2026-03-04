@@ -14,7 +14,7 @@ class FlightDelayPredictor:
 
         # Load pipeline
         self.pipeline = joblib.load(model_path)
-        self.threshold = threshold
+        self.threshold = 0.43
 
         self.preprocessor = self.pipeline.named_steps["preprocessor"]
         self.model = self.pipeline.named_steps["model"]
@@ -135,8 +135,8 @@ class FlightDelayPredictor:
 
         probs = self.pipeline.predict_proba(X)[0]
 
-        prob_no_delay = float(np.nan_to_num(probs[0]))
-        prob_delay = float(np.nan_to_num(probs[1]))
+        prob_no_delay = float(probs[0])
+        prob_delay = float(probs[1])
 
         predicted_class = int(prob_delay >= self.threshold)
         label = "Delayed" if predicted_class == 1 else "On Time"
@@ -188,7 +188,7 @@ class FlightDelayPredictor:
                 .replace("cat__", "")
             )
 
-            impact = float(np.nan_to_num(values[i]))
+            impact = float(values[i])
 
             # Extract correct value
             if clean_name.startswith("airline_") and clean_name != "airline_delay_rate":
