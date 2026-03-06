@@ -300,13 +300,11 @@
     }
 
 
-    const date = new Date(datetime);
-
     const inputData = {
       airline,
       origin_airport: origin,
       destination_airport: destination,
-      hour: date.getHours()
+      departure_datetime: formatDateTime(datetime)
     };
 
 
