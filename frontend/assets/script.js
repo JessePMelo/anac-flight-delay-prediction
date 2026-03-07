@@ -289,11 +289,9 @@
 
       '<div class="card">' +
         '<span class="badge ' + badgeClass + '">' + translatedLabel + '</span>' +
-        '<h2>' + percent + '%</h2>' +
-
+        '<h2>' + ontimePercent + '% no horário</h2>' +
         '<p class="probability-sub">' +
-          ontimePercent + '% no horário • ' +
-          delayPercent + '% atraso' +
+         delayPercent + '% de atraso provável' +
         '</p>' +
 
         '<div class="progress-bar">' +
