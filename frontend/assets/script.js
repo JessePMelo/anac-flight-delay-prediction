@@ -237,10 +237,13 @@
     let percent;
 
     if (data.label === "Delayed") {
-       percent = Math.round(data.probability_delay * 100);
+      percent = Math.round(data.probability_delay * 100);
     } else {
-    percent = Math.round(data.probability_no_delay * 100);
+      percent = Math.round(data.probability_no_delay * 100);
     }
+
+    const delayPercent = Math.round(data.probability_delay * 100);
+    const ontimePercent = Math.round(data.probability_no_delay * 100);
 
     const widthClass = buildWidthClass(percent);
 
@@ -287,6 +290,12 @@
       '<div class="card">' +
         '<span class="badge ' + badgeClass + '">' + translatedLabel + '</span>' +
         '<h2>' + percent + '%</h2>' +
+
+        '<p class="probability-sub">' +
+          ontimePercent + '% no horário • ' +
+          delayPercent + '% atraso' +
+        '</p>' +
+
         '<div class="progress-bar">' +
           '<div class="progress-fill ' + widthClass + '"></div>' +
         '</div>' +
