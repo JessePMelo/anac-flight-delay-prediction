@@ -4,22 +4,28 @@ import shap
 import numpy as np
 import pandas as pd
 import holidays
+import math
+
+
+def sanitize(value):
+    """Remove NaN e valores inválidos para JSON"""
+    if isinstance(value, float) and (math.isnan(value) or math.isinf(value)):
+        return 0.0
+    return value
 
 
 class FlightDelayPredictor:
 
     def __init__(self, model_path: str,
-                 stats_path: str = "historical_stats_v5.pkl",
-                 threshold: float = 0.5):
+                 stats_path: str = "historical_stats_v5.pkl"):
 
-        # Load pipeline
         self.pipeline = joblib.load(model_path)
+
         self.threshold = 0.43
 
         self.preprocessor = self.pipeline.named_steps["preprocessor"]
         self.model = self.pipeline.named_steps["model"]
 
-        # Load historical stats
         self.historical_stats = joblib.load(stats_path)
 
         self.origin_volume_map = self.historical_stats["origin_volume"]
@@ -29,20 +35,29 @@ class FlightDelayPredictor:
         self.hour_delay_rate_map = self.historical_stats["hour_delay_rate"]
         self.global_delay_rate = self.historical_stats["global_delay_rate"]
 
-        # SHAP
         self.explainer = shap.TreeExplainer(self.model)
-        self.feature_names = self.preprocessor.get_feature_names_out()
+
+        try:
+            self.feature_names = self.preprocessor.get_feature_names_out()
+        except:
+            self.feature_names = None
+
 
     # ====================================================
     # Hour encoding
     # ====================================================
     def _encode_hour(self, hour: int):
+
+        hour = int(hour)
+
         hour_sin = np.sin(2 * np.pi * hour / 24)
         hour_cos = np.cos(2 * np.pi * hour / 24)
+
         return hour_sin, hour_cos
 
+
     # ====================================================
-    # Date features (replicates ETL)
+    # Date features
     # ====================================================
     def _apply_date_features(self, df: pd.DataFrame):
 
@@ -65,6 +80,7 @@ class FlightDelayPredictor:
         holiday_dates = pd.DatetimeIndex(br_holidays.keys()).normalize()
 
         df["is_holiday"] = dates.isin(holiday_dates).astype("Int8")
+
         df["is_pre_holiday"] = (
             (dates + pd.Timedelta(days=1)).isin(holiday_dates)
         ).astype("Int8")
@@ -77,10 +93,12 @@ class FlightDelayPredictor:
         df["is_last_wave"] = (df["hour"] >= 20).astype("Int8")
 
         hour_sin, hour_cos = self._encode_hour(df["hour"].iloc[0])
+
         df["hour_sin"] = hour_sin
         df["hour_cos"] = hour_cos
 
         return df
+
 
     # ====================================================
     # Historical aggregations
@@ -89,9 +107,9 @@ class FlightDelayPredictor:
 
         df["route"] = df["origin_airport"] + "_" + df["destination_airport"]
 
-        df["origin_volume"] = df["origin_airport"].map(self.origin_volume_map)
-        df["destination_volume"] = df["destination_airport"].map(self.destination_volume_map)
-        df["route_volume"] = df["route"].map(self.route_volume_map)
+        df["origin_volume"] = df["origin_airport"].map(self.origin_volume_map).fillna(0)
+        df["destination_volume"] = df["destination_airport"].map(self.destination_volume_map).fillna(0)
+        df["route_volume"] = df["route"].map(self.route_volume_map).fillna(0)
 
         df["airline_delay_rate"] = df["airline"].map(self.airline_delay_rate_map)
         df["hour_delay_rate"] = df["hour"].map(self.hour_delay_rate_map)
@@ -102,6 +120,7 @@ class FlightDelayPredictor:
         df = df.drop(columns=["route", "departure_datetime"])
 
         return df
+
 
     # ====================================================
     # Prepare input
@@ -126,6 +145,7 @@ class FlightDelayPredictor:
 
         return X
 
+
     # ====================================================
     # Predict
     # ====================================================
@@ -135,10 +155,11 @@ class FlightDelayPredictor:
 
         probs = self.pipeline.predict_proba(X)[0]
 
-        prob_no_delay = float(probs[0])
-        prob_delay = float(probs[1])
+        prob_no_delay = sanitize(float(probs[0]))
+        prob_delay = sanitize(float(probs[1]))
 
         predicted_class = int(prob_delay >= self.threshold)
+
         label = "Delayed" if predicted_class == 1 else "On Time"
 
         return {
@@ -149,13 +170,13 @@ class FlightDelayPredictor:
             "threshold_used": self.threshold
         }
 
+
     # ====================================================
-    # SHAP explanation (API-ready)
+    # SHAP explanation
     # ====================================================
     def explain(self, input_data: dict, top_n: int = 10):
 
         X = self._prepare_input(input_data)
-        X_original = X.iloc[0]
 
         X_transformed = self.preprocessor.transform(X)
 
@@ -163,6 +184,7 @@ class FlightDelayPredictor:
             X_transformed = X_transformed.toarray()
 
         shap_values = self.explainer(X_transformed)
+
         values = shap_values.values[0]
 
         idx_sorted = np.argsort(np.abs(values))[::-1]
@@ -171,10 +193,14 @@ class FlightDelayPredictor:
 
         for i in idx_sorted:
 
-            feature_name = self.feature_names[i]
+            feature_name = (
+                self.feature_names[i]
+                if self.feature_names is not None
+                else f"feature_{i}"
+            )
+
             transformed_value = X_transformed[0][i]
 
-            # Ignore inactive OneHot
             if "cat__" in feature_name and abs(transformed_value) < 1e-9:
                 continue
 
@@ -188,31 +214,11 @@ class FlightDelayPredictor:
                 .replace("cat__", "")
             )
 
-            impact = float(values[i])
-
-            # Extract correct value
-            if clean_name.startswith("airline_") and clean_name != "airline_delay_rate":
-                original_value = input_data["airline"]
-
-            elif clean_name.startswith("origin_airport_"):
-                original_value = input_data["origin_airport"]
-
-            elif clean_name.startswith("destination_airport_"):
-                original_value = input_data["destination_airport"]
-
-            else:
-                original_value = X_original.get(clean_name, None)
-
-            # Convert numpy types
-            if isinstance(original_value, (np.integer,)):
-                original_value = int(original_value)
-
-            if isinstance(original_value, (np.floating,)):
-                original_value = float(original_value)
+            impact = sanitize(float(values[i]))
 
             top_features.append({
                 "feature": clean_name,
-                "value": original_value,
+                "value": sanitize(transformed_value),
                 "impact": impact,
                 "direction": "increase_delay" if impact > 0 else "decrease_delay"
             })
@@ -222,12 +228,14 @@ class FlightDelayPredictor:
 
         return top_features
 
+
     # ====================================================
     # Full response
     # ====================================================
     def predict_with_explanation(self, input_data: dict, top_n: int = 10):
 
         prediction_output = self.predict(input_data)
+
         shap_output = self.explain(input_data, top_n=top_n)
 
         return {
