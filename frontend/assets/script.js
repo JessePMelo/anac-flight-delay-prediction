@@ -29,7 +29,6 @@
   }
 
 
-  /* NOVO: formatação profissional da data */
   function formatDisplayDate(isoString) {
 
     const date = new Date(isoString);
@@ -234,7 +233,14 @@
 
   function renderResults(data) {
 
-    const percent = Math.round(data.probability_delay * 100);
+    let percent;
+
+    if (data.label === "Delayed") {
+      percent = Math.round(data.probability_delay * 100);
+    } else {
+      percent = Math.round(data.probability_no_delay * 100);
+    }
+
     const widthClass = buildWidthClass(percent);
 
     const sortedFactors = data.top_factors
@@ -296,102 +302,3 @@
       '</div>';
 
   }
-
-
-  /* -------------------------
-  SUBMIT
-  --------------------------*/
-
-  form.addEventListener("submit", function (e) {
-
-    e.preventDefault();
-
-    const airline = normalizeAirline(airlineInput.value);
-    const origin = normalizeAirport(originInput.value);
-    const destination = normalizeAirport(destinationInput.value);
-    const datetime = datetimeInput.value;
-
-    if (!airline || !origin || !destination || !datetime) {
-
-      alert("Preencha corretamente os campos.");
-      return;
-
-    }
-
-
-    const inputData = {
-      airline,
-      origin_airport: origin,
-      destination_airport: destination,
-      departure_datetime: formatDateTime(datetime)
-    };
-
-
-    predictBtn.disabled = true;
-    loader.classList.remove("hidden");
-    btnText.textContent = "Prevendo...";
-
-
-    fetch("/api/predict", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(inputData)
-    })
-
-      .then(response => {
-
-        if (!response.ok) {
-          throw new Error("Erro na API: " + response.status);
-        }
-
-        return response.json();
-
-      })
-
-      .then(data => renderResults(data))
-
-      .catch(error => {
-
-        resultsArea.innerHTML =
-          '<div class="card">' +
-            '<h2>Erro</h2>' +
-            '<p>' + error.message + '</p>' +
-          '</div>';
-
-        console.error(error);
-
-      })
-
-      .finally(() => {
-
-        predictBtn.disabled = false;
-        loader.classList.add("hidden");
-        btnText.textContent = "Prever Atraso";
-
-      });
-
-  });
-
-
-  /* -------------------------
-  LIMPAR
-  --------------------------*/
-
-  clearBtn.addEventListener("click", function () {
-
-    form.reset();
-
-    resetField(airlineInput);
-    resetField(originInput);
-    resetField(destinationInput);
-
-    resultsArea.className = "results-empty";
-
-    resultsArea.textContent =
-      "Faça uma previsão para visualizar os resultados.";
-
-  });
-
-})();
