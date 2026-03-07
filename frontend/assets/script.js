@@ -20,13 +20,32 @@
 
   function formatDateTime(value) {
 
-    const date = new Date(value);
-
-    if (isNaN(date)) {
+    if (!value) {
       throw new Error("Data inválida");
     }
 
-    return date.toISOString();
+    return value;
+
+  }
+
+
+  /* NOVO: formatação profissional da data */
+  function formatDisplayDate(isoString) {
+
+    const date = new Date(isoString);
+
+    if (isNaN(date)) {
+      return isoString;
+    }
+
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+
+    return `${day}/${month}/${year} ${hours}:${minutes}`;
 
   }
 
@@ -80,7 +99,7 @@
 
     if (!key) return null;
 
-    if (airlineLookup && airlineLookup[key]) {
+    if (typeof airlineLookup !== "undefined" && airlineLookup[key]) {
       return airlineLookup[key];
     }
 
@@ -273,7 +292,7 @@
 
       '<div class="card">' +
         '<h2>Metadados</h2>' +
-        '<p>' + data.departure_datetime + '</p>' +
+        '<p>' + formatDisplayDate(data.departure_datetime) + '</p>' +
       '</div>';
 
   }
