@@ -62,9 +62,9 @@ class FlightDelayPredictor:
     def _apply_date_features(self, df: pd.DataFrame):
 
         df["departure_datetime"] = pd.to_datetime(
-            df["departure_datetime"],
-            errors="coerce"
-        )
+          df["departure_datetime"],
+          errors="coerce"
+        ).dt.tz_localize(None)
 
         if df["departure_datetime"].isna().any():
             raise ValueError("Invalid departure_datetime format.")
