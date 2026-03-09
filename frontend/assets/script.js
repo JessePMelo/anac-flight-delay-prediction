@@ -268,7 +268,7 @@
 
       factorsHtml +=
         '<div class="factor">' +
-          '<span>' + featureName + ": " + formattedValue + '</span>' +
+          '<span>' + featureName + '</span>' +
           '<span class="' + colorClass + '">' +
             icon + " " + impactValue +
           '</span>' +
@@ -306,8 +306,11 @@
 
       '<div class="card">' +
         '<h2>Metadados</h2>' +
-        '<p>' + formatDisplayDate(data.departure_datetime) + '</p>' +
-      '</div>';
+        '<p>Companhia: ' + airlineInput.value + '</p>' +
+        '<p>Origem: ' + originInput.value + '</p>' +
+        '<p>Destino: ' + destinationInput.value + '</p>' +
+        '<p>Data e Hora: ' + formatDisplayDate(datetimeInput.value) + '</p>' +
+       '</div>';
 
   }
 
