@@ -45,8 +45,18 @@
     const hours = String(date.getHours()).padStart(2, "0");
     const minutes = String(date.getMinutes()).padStart(2, "0");
 
-    return `${day}/${month}/${year} ${hours}:${minutes}`;
+    const days = [
+      "Domingo",
+      "Segunda-feira",
+      "Terça-feira",
+      "Quarta-feira",
+      "Quinta-feira",
+      "Sexta-feira",
+      "Sábado"
+    ];
 
+    const dayName = days[date.getDay()];
+    return `${dayName} • ${day}/${month}/${year} • ${hours}:${minutes}`;
   }
 
 
@@ -304,17 +314,9 @@
 
       '<div class="card">' +
         '<span class="badge ' + badgeClass + '">' + translatedLabel + '</span>' +
-
-        '<p class="model-decision">' +
-          'Decisão do modelo: ' + translatedLabel +
-        '</p>' +
-
         '<p class="model-confidence">' +
-          'Confiança: ' + confidence + '%' +
+        'Confiança: ' + confidence + '%' +
         '</p>' +
-
-        '<h2>' + ontimePercent + '% no horário</h2>' +
-
         '<p class="probability-sub">' +
           delayPercent + '% de atraso provável' +
         '</p>' +
