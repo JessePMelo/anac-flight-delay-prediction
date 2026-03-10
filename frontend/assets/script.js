@@ -176,6 +176,7 @@
       hour_delay_rate: "Taxa de Atraso por Hora",
       origin_volume: "Volume de Voos na Origem",
       is_holiday: "É Feriado"
+      destination_volume: "Volume de Voos no Destino"
     };
 
     return dictionary[feature] || feature.replace(/_/g, " ");
@@ -268,7 +269,12 @@
 
       factorsHtml +=
         '<div class="factor">' +
-          '<span>' + featureName + '</span>' +
+          let displayName = featureName;
+
+          if (f.feature === "is_holiday" || f.feature === "day_of_week") {
+            displayName = featureName + ": " + formatFeatureValue(f.feature, f.value);
+          }
+          '<span>' + displayName + '</span>' +
           '<span class="' + colorClass + '">' +
             icon + " " + impactValue +
           '</span>' +
@@ -291,7 +297,7 @@
         '<span class="badge ' + badgeClass + '">' + translatedLabel + '</span>' +
         '<h2>' + ontimePercent + '% no horário</h2>' +
         '<p class="probability-sub">' +
-         delayPercent + '% de atraso provável' +
+          delayPercent + '% de atraso provável' +
         '</p>' +
 
         '<div class="progress-bar">' +
@@ -310,7 +316,7 @@
         '<p>Origem: ' + originInput.value + '</p>' +
         '<p>Destino: ' + destinationInput.value + '</p>' +
         '<p>Data e Hora: ' + formatDisplayDate(datetimeInput.value) + '</p>' +
-       '</div>';
+      '</div>';
 
   }
 
