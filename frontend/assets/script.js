@@ -177,16 +177,13 @@
       origin_volume: "Volume de Voos na Origem",
       destination_volume: "Volume de Voos no Destino",
       airline_delay_rate: "Histórico de Atrasos da Companhia",
-
       is_holiday: "É Feriado",
       is_weekend: "É Final de Semana",
-
       is_first_wave: "Primeira Onda de Voos (manhã cedo)",
       is_last_wave: "Última Onda de Voos (noite)",
-
       is_pre_holiday: "Véspera de Feriado",
       is_post_holiday: "Pós-feriado"
-};
+    };
 
     return dictionary[feature] || feature.replace(/_/g, " ");
 
@@ -264,6 +261,12 @@
 
     let factorsHtml = "";
 
+    const confidence =
+      data.label === "Delayed" ? delayPercent : ontimePercent;
+
+    const translatedLabel =
+      data.label === "Delayed" ? "Atrasado" : "No Horário";
+
     sortedFactors.forEach(function (f) {
 
       const isIncrease = f.direction === "increase_delay";
@@ -292,10 +295,6 @@
 
     });
 
-
-    const translatedLabel =
-      data.label === "Delayed" ? "Atrasado" : "No Horário";
-
     const badgeClass =
       data.label === "Delayed" ? "badge-delayed" : "badge-ontime";
 
@@ -305,7 +304,17 @@
 
       '<div class="card">' +
         '<span class="badge ' + badgeClass + '">' + translatedLabel + '</span>' +
+
+        '<p class="model-decision">' +
+          'Decisão do modelo: ' + translatedLabel +
+        '</p>' +
+
+        '<p class="model-confidence">' +
+          'Confiança: ' + confidence + '%' +
+        '</p>' +
+
         '<h2>' + ontimePercent + '% no horário</h2>' +
+
         '<p class="probability-sub">' +
           delayPercent + '% de atraso provável' +
         '</p>' +
@@ -318,11 +327,12 @@
       '<div class="card">' +
         '<h2>Fatores</h2>' +
         '<p class="factors-subtitle">' +
-        'Principais variáveis que influenciaram esta previsão. ' +
-        'Os valores representam o impacto relativo no modelo (log-odds), não probabilidades diretas. ' +
+          'Principais variáveis que influenciaram esta previsão. ' +
+          'Os valores representam o impacto relativo no modelo (log-odds), não probabilidades diretas. ' +
+          '↑ aumenta chance de atraso • ↓ reduz chance de atraso. ' +
         '</p>' +
         factorsHtml +
-      '</div>'
+      '</div>' +
 
       '<div class="card">' +
         '<h2>Metadados</h2>' +
@@ -355,7 +365,6 @@
 
     }
 
-
     const inputData = {
       airline,
       origin_airport: origin,
@@ -363,11 +372,9 @@
       departure_datetime: formatDateTime(datetime)
     };
 
-
     predictBtn.disabled = true;
     loader.classList.remove("hidden");
     btnText.textContent = "Prevendo...";
-
 
     fetch("/api/predict", {
       method: "POST",
@@ -393,8 +400,8 @@
 
         resultsArea.innerHTML =
           '<div class="card">' +
-            '<h2>Erro</h2>' +
-            '<p>' + error.message + '</p>' +
+          '<h2>Erro</h2>' +
+          '<p>' + error.message + '</p>' +
           '</div>';
 
         console.error(error);

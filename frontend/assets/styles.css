@@ -8,8 +8,9 @@
   padding: 0;
 }
 
+
 /* =========================================================
-   LAYOUT BASE + TIPOGRAFIA REFINADA
+   BASE / TIPOGRAFIA
 ========================================================= */
 
 body {
@@ -36,6 +37,7 @@ main {
   margin: 0 auto;
   padding: 24px;
 }
+
 
 /* =========================================================
    HEADER
@@ -67,8 +69,9 @@ main {
   margin-top: 3px;
 }
 
+
 /* =========================================================
-   HERO
+   HERO / INTRODUÇÃO
 ========================================================= */
 
 #hero {
@@ -96,8 +99,9 @@ main {
   text-align: justify;
 }
 
+
 /* =========================================================
-   GRID PRINCIPAL
+   LAYOUT PRINCIPAL
 ========================================================= */
 
 #app-grid {
@@ -105,6 +109,7 @@ main {
   grid-template-columns: 1fr 1.2fr;
   gap: 24px;
 }
+
 
 /* =========================================================
    CARDS
@@ -133,10 +138,16 @@ main {
   letter-spacing: -0.3px;
   margin-bottom: 14px;
   color: #111827;
+  line-height: 1.3;
 }
 
+.card h2 strong {
+  font-weight: 700;
+}
+
+
 /* =========================================================
-   PROBABILITY TEXT  
+   PROBABILIDADE DA PREVISÃO
 ========================================================= */
 
 .probability-sub {
@@ -147,15 +158,6 @@ main {
   line-height: 1.4;
 }
 
-/* destaque leve para o número principal */
-.card h2 strong {
-  font-weight: 700;
-}
-
-/* deixa o título de probabilidade mais confortável visualmente */
-.card h2 {
-  line-height: 1.3;
-}
 
 /* =========================================================
    FORMULÁRIO
@@ -184,6 +186,7 @@ input:focus {
   border-color: #3b5bdb;
   box-shadow: 0 0 0 3px rgba(59, 91, 219, 0.12);
 }
+
 
 /* =========================================================
    BOTÕES
@@ -233,46 +236,9 @@ input:focus {
   background: #f2ede6;
 }
 
-/* =========================================================
-   RESULTADO VAZIO
-========================================================= */
-
-.results-empty {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px dashed #e5e2dc;
-  border-radius: 14px;
-  padding: 32px;
-  color: #8b8b8b;
-  font-size: 14px;
-}
 
 /* =========================================================
-   SEÇÃO INSTITUCIONAL
-========================================================= */
-
-#about {
-  max-width: 720px;
-  margin: 70px auto 0 auto;
-  text-align: justify;
-  hyphens: auto;
-}
-
-#about h2 {
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 14px;
-  text-align: left;
-  color: #111827;
-}
-
-#about p {
-  margin-bottom: 14px;
-}
-
-/* =========================================================
-   BADGES
+   BADGES DE STATUS
 ========================================================= */
 
 .badge {
@@ -294,8 +260,9 @@ input:focus {
   color: white;
 }
 
+
 /* =========================================================
-   PROGRESS BAR
+   BARRA DE PROBABILIDADE
 ========================================================= */
 
 .progress-bar {
@@ -312,9 +279,18 @@ input:focus {
   transition: width 200ms ease-in-out;
 }
 
+
 /* =========================================================
-   FATORES SHAP
+   EXPLICAÇÃO DO MODELO (SHAP)
 ========================================================= */
+
+.factors-subtitle {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 14px;
+  line-height: 1.5;
+  max-width: 95%;
+}
 
 .factor {
   display: flex;
@@ -323,6 +299,10 @@ input:focus {
   gap: 16px;
   margin-bottom: 12px;
   font-size: 14px;
+}
+
+.factor:first-of-type {
+  margin-top: 10px;
 }
 
 .factor span:first-child {
@@ -343,6 +323,34 @@ input:focus {
 .decrease {
   color: #16a34a;
 }
+
+.model-decision {
+  font-size: 14px;
+  color: #374151;
+  margin-top: 4px;
+}
+
+.model-confidence {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+/* =========================================================
+   ESTADO VAZIO DE RESULTADOS
+========================================================= */
+
+.results-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed #e5e2dc;
+  border-radius: 14px;
+  padding: 32px;
+  color: #8b8b8b;
+  font-size: 14px;
+}
+
 
 /* =========================================================
    LOADER
@@ -367,6 +375,31 @@ input:focus {
   }
 }
 
+
+/* =========================================================
+   SEÇÃO INSTITUCIONAL
+========================================================= */
+
+#about {
+  max-width: 720px;
+  margin: 70px auto 0 auto;
+  text-align: justify;
+  hyphens: auto;
+}
+
+#about h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 14px;
+  text-align: left;
+  color: #111827;
+}
+
+#about p {
+  margin-bottom: 14px;
+}
+
+
 /* =========================================================
    FOOTER
 ========================================================= */
@@ -384,6 +417,7 @@ input:focus {
   gap: 8px;
 }
 
+
 /* =========================================================
    RESPONSIVIDADE
 ========================================================= */
@@ -400,8 +434,9 @@ input:focus {
   }
 }
 
+
 /* =========================================================
-   UTILITÁRIOS PROGRESS WIDTH
+   UTILITÁRIOS
 ========================================================= */
 
 .w-0 { width: 0%; }
