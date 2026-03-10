@@ -175,9 +175,18 @@
       day_of_week: "Dia da Semana",
       hour_delay_rate: "Taxa de Atraso por Hora",
       origin_volume: "Volume de Voos na Origem",
+      destination_volume: "Volume de Voos no Destino",
+      airline_delay_rate: "Histórico de Atrasos da Companhia",
+
       is_holiday: "É Feriado",
-      destination_volume: "Volume de Voos no Destino"
-    };
+      is_weekend: "É Final de Semana",
+
+      is_first_wave: "Primeira Onda de Voos (manhã cedo)",
+      is_last_wave: "Última Onda de Voos (noite)",
+
+      is_pre_holiday: "Véspera de Feriado",
+      is_post_holiday: "Pós-feriado"
+};
 
     return dictionary[feature] || feature.replace(/_/g, " ");
 
@@ -308,8 +317,12 @@
 
       '<div class="card">' +
         '<h2>Fatores</h2>' +
+        '<p class="factors-subtitle">' +
+        'Principais variáveis que influenciaram esta previsão. ' +
+        'Os valores representam o impacto relativo no modelo (log-odds), não probabilidades diretas. ' +
+        '</p>' +
         factorsHtml +
-      '</div>' +
+      '</div>'
 
       '<div class="card">' +
         '<h2>Metadados</h2>' +
