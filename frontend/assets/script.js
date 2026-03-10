@@ -175,7 +175,7 @@
       day_of_week: "Dia da Semana",
       hour_delay_rate: "Taxa de Atraso por Hora",
       origin_volume: "Volume de Voos na Origem",
-      is_holiday: "É Feriado"
+      is_holiday: "É Feriado",
       destination_volume: "Volume de Voos no Destino"
     };
 
@@ -267,17 +267,18 @@
       const impactValue =
         (isIncrease ? "+" : "") + Number(f.impact).toFixed(3);
 
+      let displayName = featureName;
+
+      if (f.feature === "is_holiday" || f.feature === "day_of_week") {
+        displayName = featureName + ": " + formatFeatureValue(f.feature, f.value);
+      }
+
       factorsHtml +=
         '<div class="factor">' +
-          let displayName = featureName;
-
-          if (f.feature === "is_holiday" || f.feature === "day_of_week") {
-            displayName = featureName + ": " + formatFeatureValue(f.feature, f.value);
-          }
-          '<span>' + displayName + '</span>' +
-          '<span class="' + colorClass + '">' +
-            icon + " " + impactValue +
-          '</span>' +
+        '<span>' + displayName + '</span>' +
+        '<span class="' + colorClass + '">' +
+        icon + " " + impactValue +
+        '</span>' +
         '</div>';
 
     });
