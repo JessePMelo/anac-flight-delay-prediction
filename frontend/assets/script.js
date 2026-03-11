@@ -13,7 +13,6 @@
   const destinationInput = document.getElementById("destination_airport");
   const datetimeInput = document.getElementById("departure_datetime");
 
-
   /* -------------------------
   UTILIDADES
   --------------------------*/
@@ -27,7 +26,6 @@
     return value;
 
   }
-
 
   /* NOVO: formatação profissional da data */
   function formatDisplayDate(isoString) {
@@ -56,9 +54,10 @@
     ];
 
     const dayName = days[date.getDay()];
-    return `${dayName} • ${day}/${month}/${year} • ${hours}:${minutes}`;
-  }
 
+    return `${dayName} • ${day}/${month}/${year} • ${hours}:${minutes}`;
+
+  }
 
   function setFieldValid(input) {
 
@@ -67,7 +66,6 @@
 
   }
 
-
   function setFieldInvalid(input) {
 
     input.style.borderColor = "#dc2626";
@@ -75,14 +73,12 @@
 
   }
 
-
   function resetField(input) {
 
     input.style.borderColor = "";
     input.style.background = "";
 
   }
-
 
   /* -------------------------
   NORMALIZAÇÃO
@@ -102,7 +98,6 @@
 
   }
 
-
   function normalizeAirline(value) {
 
     const key = value.trim().toUpperCase();
@@ -116,7 +111,6 @@
     return null;
 
   }
-
 
   /* -------------------------
   AUTOCORREÇÃO INPUT
@@ -139,7 +133,6 @@
 
   }
 
-
   function validateAirlineInput(input) {
 
     const normalized = normalizeAirline(input.value);
@@ -157,11 +150,9 @@
 
   }
 
-
   airlineInput.addEventListener("blur", () => validateAirlineInput(airlineInput));
   originInput.addEventListener("blur", () => validateAirportInput(originInput));
   destinationInput.addEventListener("blur", () => validateAirportInput(destinationInput));
-
 
   /* -------------------------
   TRADUÇÃO FEATURES
@@ -199,22 +190,16 @@
 
   }
 
-
   function formatFeatureValue(feature, value) {
 
     if (feature === "day_of_week") {
 
       const days = [
-        "Domingo",
-        "Segunda-feira",
-        "Terça-feira",
-        "Quarta-feira",
-        "Quinta-feira",
-        "Sexta-feira",
-        "Sábado"
+        "Domingo", "Segunda-feira", "Terça-feira",
+        "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"
       ];
 
-      return days[value] || value;
+      return days[Math.round(value)] || "";
 
     }
 
@@ -234,7 +219,6 @@
 
   }
 
-
   function buildWidthClass(percent) {
 
     if (percent < 0) percent = 0;
@@ -243,7 +227,6 @@
     return "w-" + percent;
 
   }
-
 
   /* -------------------------
   RENDER RESULTADOS
@@ -279,6 +262,10 @@
 
     sortedFactors.forEach(function (f) {
 
+      if (f.feature.startsWith("is_") && f.value !== 1) {
+        return;
+      }
+
       const isIncrease = f.direction === "increase_delay";
       const icon = isIncrease ? "↑" : "↓";
       const colorClass = isIncrease ? "increase" : "decrease";
@@ -287,12 +274,13 @@
       const formattedValue = formatFeatureValue(f.feature, f.value);
 
       const impactValue =
-        (isIncrease ? "+" : "") + Number(f.impact).toFixed(3);
+        isIncrease ? "↑ aumenta risco" : "↓ reduz risco";
 
       let displayName = featureName;
 
       if (f.feature === "is_holiday" || f.feature === "day_of_week") {
-        displayName = featureName + ": " + formatFeatureValue(f.feature, f.value);
+        displayName =
+          featureName + ": " + formatFeatureValue(f.feature, f.value);
       }
 
       factorsHtml +=
@@ -345,7 +333,6 @@
       '</div>';
 
   }
-
 
   /* -------------------------
   SUBMIT
@@ -419,7 +406,6 @@
       });
 
   });
-
 
   /* -------------------------
   LIMPAR
