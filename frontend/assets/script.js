@@ -177,6 +177,7 @@
       hour_delay_rate: "Taxa de Atraso por Hora",
       origin_volume: "Volume de Voos na Origem",
       destination_volume: "Volume de Voos no Destino",
+      route_volume: "Volume de Voos na Rota",
       airline_delay_rate: "Histórico de Atrasos da Companhia",
       is_holiday: "É Feriado",
       is_weekend: "É Final de Semana",
