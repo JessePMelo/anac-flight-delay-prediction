@@ -250,7 +250,7 @@
     const sortedFactors = data.top_factors
       .slice()
       .sort((a, b) => Math.abs(b.impact) - Math.abs(a.impact))
-      .slice(0, 5);
+      .slice(0, 7);
 
     let factorsHtml = "";
 
@@ -303,10 +303,15 @@
       '<div class="card">' +
         '<span class="badge ' + badgeClass + '">' + translatedLabel + '</span>' +
         '<p class="model-confidence">' +
-        'Confiança: ' + confidence + '%' +
+          'Confiança: ' + confidence + '%' +
         '</p>' +
         '<p class="probability-sub">' +
           delayPercent + '% de atraso provável' +
+        '</p>' +
+
+        '<p class="threshold-sub">' +
+          'Limite de decisão do modelo para classificar atrasado: ' +
+          Math.round(data.threshold_used * 100) + '%' +
         '</p>' +
 
         '<div class="progress-bar">' +
