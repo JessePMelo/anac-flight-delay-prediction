@@ -271,10 +271,6 @@
 
     selectedFactors.forEach(function (f) {
 
-      if (f.feature.startsWith("is_") && f.value !== 1) {
-        return;
-      }
-
       const isIncrease = f.direction === "increase_delay";
       const icon = isIncrease ? "↑" : "↓";
       const colorClass = isIncrease ? "increase" : "decrease";
@@ -283,7 +279,8 @@
       const formattedValue = formatFeatureValue(f.feature, f.value);
 
       const impactValue =
-        isIncrease ? "↑ aumenta risco" : "↓ reduz risco";
+        (isIncrease ? "aumenta risco" : "reduz risco") +
+        " (" + f.impact.toFixed(3) + ")";
 
       let displayName = featureName;
 
