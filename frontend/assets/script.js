@@ -249,8 +249,17 @@
 
     const sortedFactors = data.top_factors
       .slice()
-      .sort((a, b) => Math.abs(b.impact) - Math.abs(a.impact))
-      .slice(0, 7);
+      .sort((a, b) => Math.abs(b.impact) - Math.abs(a.impact));
+
+    const positiveFactors = sortedFactors
+      .filter(f => f.direction === "increase_delay")
+      .slice(0, 3);
+
+    const negativeFactors = sortedFactors
+      .filter(f => f.direction === "decrease_delay")
+      .slice(0, 3);
+
+    const selectedFactors = [...positiveFactors, ...negativeFactors];
 
     let factorsHtml = "";
 
@@ -260,7 +269,7 @@
     const translatedLabel =
       data.label === "Delayed" ? "Atrasado" : "No Horário";
 
-    sortedFactors.forEach(function (f) {
+    selectedFactors.forEach(function (f) {
 
       if (f.feature.startsWith("is_") && f.value !== 1) {
         return;
@@ -299,7 +308,6 @@
     resultsArea.className = "";
 
     resultsArea.innerHTML =
-
       '<div class="card">' +
         '<span class="badge ' + badgeClass + '">' + translatedLabel + '</span>' +
         '<p class="model-confidence">' +
@@ -308,12 +316,10 @@
         '<p class="probability-sub">' +
           delayPercent + '% de atraso provável' +
         '</p>' +
-
         '<p class="threshold-sub">' +
           'Limite de decisão do modelo para classificar atrasado: ' +
           Math.round(data.threshold_used * 100) + '%' +
         '</p>' +
-
         '<div class="progress-bar">' +
           '<div class="progress-fill ' + widthClass + '"></div>' +
         '</div>' +
