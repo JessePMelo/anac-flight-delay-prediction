@@ -9,7 +9,7 @@
   <title>Radar de Atrasos | Previsão de Atrasos de Voos com IA</title>
 
   <meta name="description"
-    content="Ferramenta de Machine Learning que prevê a probabilidade de atraso de voos utilizando dados públicos da ANAC.">
+    content="Aplicação de Machine Learning que estima a probabilidade de atraso de voos no Brasil utilizando dados históricos da ANAC e técnicas de explicabilidade de modelos (SHAP).">
   <meta name="author" content="Jessé Melo">
 
   <link rel="stylesheet" href="assets/styles.css">
@@ -50,9 +50,7 @@
       </h1>
 
       <p>
-        Analise a probabilidade de atraso aéreo utilizando um modelo de Machine Learning
-        com técnicas de explicabilidade SHAP para entender os principais fatores que
-        influenciam atrasos de voos.
+        Esta ferramenta utiliza Machine Learning para estimar a probabilidade de atraso em voos comerciais no Brasil com base em dados históricos da ANAC. Além da previsão, o sistema apresenta os principais fatores que influenciaram o resultado utilizando técnicas de explicabilidade do modelo (SHAP).
       </p>
 
     </section>
@@ -148,7 +146,7 @@
         id="results-area"
         class="results-empty">
 
-        Faça uma previsão para visualizar os resultados.
+        Faça uma simulação preenchendo os dados do voo para visualizar a probabilidade de atraso e os fatores que influenciam a previsão.
 
       </div>
 
@@ -407,16 +405,43 @@
       </h2>
 
       <p>
-        O Radar de Atrasos é uma aplicação de Machine Learning que estima a
-        probabilidade de atraso em voos utilizando dados públicos da ANAC.
+      O Radar de Atrasos é um projeto de ciência de dados que estima a probabilidade de atraso em voos utilizando dados públicos disponibilizados pela ANAC (Agência Nacional de Aviação Civil).
       </p>
 
       <p>
-        O projeto utiliza regressão logística e XGBoost para modelagem,
-        além de SHAP para explicabilidade das previsões.
+      O modelo foi desenvolvido utilizando técnicas de Machine Learning, incluindo regressão logística como modelo de referência e XGBoost como modelo principal de classificação.
+      </p>
+
+      <p>
+      Para tornar as previsões mais transparentes, o sistema utiliza SHAP (SHapley Additive Explanations), permitindo identificar quais variáveis tiveram maior influência na decisão do modelo para cada previsão.
       </p>
 
     </section>
+
+    <section id="method">
+
+      <h2>Como funciona</h2>
+
+      <p>
+      A previsão é realizada a partir de um modelo treinado com dados históricos de voos no Brasil. O sistema analisa informações como companhia aérea, aeroportos de origem e destino, horário do voo e padrões operacionais observados no histórico de voos.
+      </p>
+
+      <p>
+      Com base nesses dados, o modelo estima a probabilidade de atraso e apresenta os fatores mais relevantes que influenciaram a decisão da previsão.
+      </p>
+
+    </section>
+
+    <section id="disclaimer">
+
+      <h2>Observação</h2>
+
+        <p>
+        As previsões apresentadas são estimativas baseadas em padrões históricos de operação e não representam previsões operacionais oficiais. Diversos fatores externos, como condições meteorológicas ou eventos operacionais imprevistos, podem influenciar atrasos reais.
+        </p>
+
+    </section>
+
 
   </main>
 
