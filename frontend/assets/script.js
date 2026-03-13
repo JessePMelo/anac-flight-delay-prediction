@@ -14,7 +14,7 @@
   const datetimeInput = document.getElementById("departure_datetime");
 
   /* -------------------------
-  UTILIDADES
+     UTILIDADES
   --------------------------*/
 
   function formatDateTime(value) {
@@ -81,7 +81,7 @@
   }
 
   /* -------------------------
-  NORMALIZAÇÃO
+     NORMALIZAÇÃO
   --------------------------*/
 
   function normalizeAirport(value) {
@@ -100,9 +100,13 @@
 
   function normalizeAirline(value) {
 
-    const key = value.trim().toUpperCase();
+    if (!value) return null;
 
-    if (!key) return null;
+    const key = value
+      .trim()
+      .toUpperCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, ""); // remove acentos
 
     if (typeof airlineLookup !== "undefined" && airlineLookup[key]) {
       return airlineLookup[key];
@@ -113,7 +117,7 @@
   }
 
   /* -------------------------
-  AUTOCORREÇÃO INPUT
+     AUTOCORREÇÃO INPUT
   --------------------------*/
 
   function validateAirportInput(input) {
@@ -155,7 +159,7 @@
   destinationInput.addEventListener("blur", () => validateAirportInput(destinationInput));
 
   /* -------------------------
-  TRADUÇÃO FEATURES
+     TRADUÇÃO FEATURES
   --------------------------*/
 
   function translateFeature(feature) {
@@ -230,7 +234,7 @@
   }
 
   /* -------------------------
-  RENDER RESULTADOS
+     RENDER RESULTADOS
   --------------------------*/
 
   function renderResults(data) {
@@ -307,44 +311,44 @@
 
     resultsArea.innerHTML =
       '<div class="card">' +
-        '<span class="badge ' + badgeClass + '">' + translatedLabel + '</span>' +
-        '<p class="model-confidence">' +
-          'Confiança: ' + confidence + '%' +
-        '</p>' +
-        '<p class="probability-sub">' +
-          delayPercent + '% de atraso provável' +
-        '</p>' +
-        '<p class="threshold-sub">' +
-          'Limite de decisão do modelo para classificar atrasado: ' +
-          Math.round(data.threshold_used * 100) + '%' +
-        '</p>' +
-        '<div class="progress-bar">' +
-          '<div class="progress-fill ' + widthClass + '"></div>' +
-        '</div>' +
+      '<span class="badge ' + badgeClass + '">' + translatedLabel + '</span>' +
+      '<p class="model-confidence">' +
+      'Confiança: ' + confidence + '%' +
+      '</p>' +
+      '<p class="probability-sub">' +
+      delayPercent + '% de atraso provável' +
+      '</p>' +
+      '<p class="threshold-sub">' +
+      'Limite de decisão do modelo para classificar atrasado: ' +
+      Math.round(data.threshold_used * 100) + '%' +
+      '</p>' +
+      '<div class="progress-bar">' +
+      '<div class="progress-fill ' + widthClass + '"></div>' +
+      '</div>' +
       '</div>' +
 
       '<div class="card">' +
-        '<h2>Fatores</h2>' +
-        '<p class="factors-subtitle">' +
-          'Principais variáveis que influenciaram esta previsão. ' +
-          'Os valores representam o impacto relativo no modelo (log-odds), não probabilidades diretas. ' +
-          '↑ aumenta chance de atraso • ↓ reduz chance de atraso. ' +
-        '</p>' +
-        factorsHtml +
+      '<h2>Fatores</h2>' +
+      '<p class="factors-subtitle">' +
+      'Principais variáveis que influenciaram esta previsão. ' +
+      'Os valores representam o impacto relativo no modelo (log-odds), não probabilidades diretas. ' +
+      '↑ aumenta chance de atraso • ↓ reduz chance de atraso. ' +
+      '</p>' +
+      factorsHtml +
       '</div>' +
 
       '<div class="card">' +
-        '<h2>Metadados</h2>' +
-        '<p>Companhia: ' + airlineInput.value + '</p>' +
-        '<p>Origem: ' + originInput.value + '</p>' +
-        '<p>Destino: ' + destinationInput.value + '</p>' +
-        '<p>Data e Hora: ' + formatDisplayDate(datetimeInput.value) + '</p>' +
+      '<h2>Metadados</h2>' +
+      '<p>Companhia: ' + airlineInput.value + '</p>' +
+      '<p>Origem: ' + originInput.value + '</p>' +
+      '<p>Destino: ' + destinationInput.value + '</p>' +
+      '<p>Data e Hora: ' + formatDisplayDate(datetimeInput.value) + '</p>' +
       '</div>';
 
   }
 
   /* -------------------------
-  SUBMIT
+     SUBMIT
   --------------------------*/
 
   form.addEventListener("submit", function (e) {
@@ -417,7 +421,7 @@
   });
 
   /* -------------------------
-  LIMPAR
+     LIMPAR
   --------------------------*/
 
   clearBtn.addEventListener("click", function () {
