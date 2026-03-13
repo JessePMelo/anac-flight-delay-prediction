@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Radar de Atrasos | Previsão de Atrasos de Voos com IA</title>
+
+  <meta name="description"
+    content="Ferramenta de Machine Learning que prevê a probabilidade de atraso de voos utilizando dados públicos da ANAC.">
+  <meta name="author" content="Jessé Melo">
+
+  <link rel="stylesheet" href="assets/styles.css">
+
+  <!-- lookup tables -->
+  <script src="assets/airport_lookup.js"></script>
+  <script src="assets/airline_lookup.js"></script>
+
+  <!-- main script -->
+  <script src="assets/script.js" defer></script>
+
+</head>
+
+<body>
+
+  <header class="site-header">
+
+    <div class="container header-content">
+
+      <div class="logo">
+        Radar de Atrasos
+      </div>
+
+      <div class="header-subtitle">
+        Previsão Inteligente de Atrasos Aéreos
+      </div>
+
+    </div>
+
+  </header>
+
+  <main class="container">
+
+    <section id="hero">
+
+      <h1>
+        Previsão de Atraso de Voos com Machine Learning
+      </h1>
+
+      <p>
+        Analise a probabilidade de atraso aéreo utilizando um modelo de Machine Learning
+        com técnicas de explicabilidade SHAP para entender os principais fatores que
+        influenciam atrasos de voos.
+      </p>
+
+    </section>
+
+    <section id="app-grid">
+
+      <div id="form-card" class="card">
+
+        <h2>
+          Dados do Voo
+        </h2>
+
+        <form id="prediction-form" autocomplete="off">
+
+          <label for="airline">
+
+            Companhia Aérea
+
+            <input
+              list="company-list"
+              id="airline"
+              placeholder="Ex: Gol, LATAM, AZU"
+              required>
+
+          </label>
+
+          <label for="origin_airport">
+
+            Aeroporto de Origem
+
+            <input
+              list="airport-list"
+              id="origin_airport"
+              placeholder="Cidade, IATA ou ICAO (ex: São Paulo, GRU, SBGR)"
+              required>
+
+          </label>
+
+          <label for="destination_airport">
+
+            Aeroporto de Destino
+
+            <input
+              list="airport-list"
+              id="destination_airport"
+              placeholder="Cidade, IATA ou ICAO"
+              required>
+
+          </label>
+
+          <label for="departure_datetime">
+
+            Data e Hora
+
+            <input
+              type="datetime-local"
+              id="departure_datetime"
+              required>
+
+          </label>
+
+          <div class="button-group">
+
+            <button
+              type="submit"
+              id="predict-btn"
+              class="btn-primary">
+
+              <span class="btn-text">
+                Prever Atraso
+              </span>
+
+              <span class="loader hidden"></span>
+
+            </button>
+
+            <button
+              type="button"
+              id="clear-btn"
+              class="btn-outline">
+
+              Limpar
+
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+      <div
+        id="results-area"
+        class="results-empty">
+
+        Faça uma previsão para visualizar os resultados.
+
+      </div>
+
+    </section>
+
+    <!-- AIRPORT OPTIONS -->
+
+    <datalist id="airport-list">
+
+      <option value="SBFZ">FOR – Fortaleza (SBFZ)</option>
+      <option value="SBGR">GRU – São Paulo (SBGR)</option>
+      <option value="SBRF">REC – Recife (SBRF)</option>
+      <option value="SBPS">BPS – Porto Seguro (SBPS)</option>
+      <option value="SBSR">SJP – São José do Rio Preto (SBSR)</option>
+      <option value="SBIL">IOS – Ilhéus (SBIL)</option>
+      <option value="SBCF">CNF – Belo Horizonte (SBCF)</option>
+      <option value="SBJP">JPA – João Pessoa (SBJP)</option>
+      <option value="SWBE">JSB – São Benedito (SWBE)</option>
+      <option value="SBAE">JTC – Bauru (SBAE)</option>
+      <option value="SBTC">UNA – Una (SBTC)</option>
+      <option value="SBUL">UDI – Uberlândia (SBUL)</option>
+      <option value="SBGO">GYN – Goiânia (SBGO)</option>
+      <option value="SBMO">MCZ – Maceió (SBMO)</option>
+      <option value="SBGL">GIG – Rio De Janeiro (SBGL)</option>
+      <option value="SBFI">IGU – Foz do Iguaçu (SBFI)</option>
+      <option value="SBSP">CGH – São Paulo (SBSP)</option>
+      <option value="SBCY">CGB – Cuiabá (SBCY)</option>
+      <option value="SBSG">NAT – Natal (SBSG)</option>
+      <option value="SBKP">VCP – Campinas (SBKP)</option>
+      <option value="SBPA">POA – Porto Alegre (SBPA)</option>
+      <option value="SBUR">UBA – Uberaba (SBUR)</option>
+      <option value="SBMG">MGF – Maringá (SBMG)</option>
+      <option value="SBSV">SSA – Salvador (SBSV)</option>
+      <option value="SBRP">RAO – Ribeirão Preto (SBRP)</option>
+      <option value="SBDN">PPB – Presidente Prudente (SBDN)</option>
+      <option value="SBCR">CMG – Corumbá (SBCR)</option>
+      <option value="SBDB">BYO – Bonito (SBDB)</option>
+      <option value="SBCA">CAC – Cascavel (SBCA)</option>
+      <option value="SBAR">AJU – Aracaju (SBAR)</option>
+      <option value="SBCN">CLV – Caldas Novas (SBCN)</option>
+      <option value="SBCT">CWB – Curitiba (SBCT)</option>
+      <option value="SBAU">ARU – Araçatuba (SBAU)</option>
+      <option value="SBLO">LDB – Londrina (SBLO)</option>
+      <option value="SBJV">JOI – Joinville (SBJV)</option>
+      <option value="SBME">MEA – Macaé (SBME)</option>
+      <option value="SBNF">NVT – Navegantes (SBNF)</option>
+      <option value="SBEG">MAO – Manaus (SBEG)</option>
+      <option value="SBSL">SLZ – São Luís (SBSL)</option>
+      <option value="SBBR">BSB – Brasília (SBBR)</option>
+      <option value="SIRI">MUU – Maraú (SIRI)</option>
+      <option value="SNCL">MXQ – Cairu (SNCL)</option>
+      <option value="SBVT">VIX – Vitória (SBVT)</option>
+      <option value="SBCP">CAW – Campos dos Goytacazes (SBCP)</option>
+      <option value="SBRJ">SDU – Rio de Janeiro (SBRJ)</option>
+      <option value="SBFL">FLN – Florianópolis (SBFL)</option>
+      <option value="SBBE">BEL – Belém (SBBE)</option>
+      <option value="SNIG">QIG – Iguatu (SNIG)</option>
+      <option value="SBTE">THE – Teresina (SBTE)</option>
+      <option value="SNWS">JCS – Crateús (SNWS)</option>
+      <option value="SBKG">CPV – Campina Grande (SBKG)</option>
+      <option value="SBZM">IZA – Juiz de Fora (SBZM)</option>
+      <option value="SBJR">RRJ – Rio De Janeiro (SBJR)</option>
+      <option value="SBMK">MOC – Montes Claros (SBMK)</option>
+      <option value="SBBV">BVB – Boa Vista (SBBV)</option>
+      <option value="SBJA">JJG – Jaguaruna (SBJA)</option>
+      <option value="SBJU">JDO – Juazeiro do Norte (SBJU)</option>
+      <option value="SBAC">ARX – Aracati (SBAC)</option>
+      <option value="SBJE">JJD – Cruz (SBJE)</option>
+      <option value="SBPB">PHB – Parnaíba (SBPB)</option>
+      <option value="SSRS">BRB – Barreirinhas (SSRS)</option>
+      <option value="SBTG">TJL – Três Lagoas (SBTG)</option>
+      <option value="SWLC">RVD – Rio Verde (SWLC)</option>
+      <option value="SBPK">PET – Pelotas (SBPK)</option>
+      <option value="SBMS">MVF – Mossoró (SBMS)</option>
+      <option value="SBPF">PFB – Passo Fundo (SBPF)</option>
+      <option value="SBPV">PVH – Porto Velho (SBPV)</option>
+      <option value="SBPG">PGZ – Ponta Grossa (SBPG)</option>
+      <option value="SBVG">VAG – Varginha (SBVG)</option>
+      <option value="SNTO">TFL – Teófilo Otoni (SNTO)</option>
+      <option value="SNPD">POJ – Patos de Minas (SNPD)</option>
+      <option value="SNZR">PYT – Paracatu (SNZR)</option>
+      <option value="SBTF">TFF – Tefé (SBTF)</option>
+      <option value="SWTP">IRZ – Santa Isabel do Rio Negro (SWTP)</option>
+      <option value="SBSN">STM – Santarém (SBSN)</option>
+      <option value="SWBC">BAZ – Barcelos (SWBC)</option>
+      <option value="SWYN">IUP – Apuí (SWYN)</option>
+      <option value="SWKO">CIZ – Coari (SWKO)</option>
+      <option value="SBMY">MNX – Manicoré (SBMY)</option>
+      <option value="SWBR">RBB – Borba (SWBR)</option>
+      <option value="SWMW">MBZ – Maués (SWMW)</option>
+      <option value="SBMD">MEU – Almeirim (SBMD)</option>
+      <option value="SNSM">OPP – Salinópolis (SNSM)</option>
+      <option value="SNVS">BVS – Breves (SNVS)</option>
+      <option value="SNEB">JPE – Paragominas (SNEB)</option>
+      <option value="SSOU">AIR – Aripuanã (SSOU)</option>
+      <option value="SWJN">JIA – Juína (SWJN)</option>
+      <option value="SBBW">BPG – Barra do Garças (SBBW)</option>
+      <option value="SWLB">LBR – Lábrea (SWLB)</option>
+      <option value="SBJI">JPR – Ji-Paraná (SBJI)</option>
+      <option value="SBUF">PAV – Paulo Afonso (SBUF)</option>
+      <option value="SBNM">GEL – Santo Ângelo (SBNM)</option>
+      <option value="SWHP">GGB – Água Boa (SWHP)</option>
+      <option value="SNAB">JAW – Araripina (SNAB)</option>
+      <option value="SBCB">CFB – Cabo Frio (SBCB)</option>
+      <option value="SNRU">CAU – Caruaru (SNRU)</option>
+      <option value="SNHS">SET – Serra Talhada (SNHS)</option>
+      <option value="SNTS">JPO – Patos (SNTS)</option>
+      <option value="SBIP">IPN – Ipatinga (SBIP)</option>
+      <option value="SNGN">QGP – Garanhuns (SNGN)</option>
+      <option value="SBJD">QDV – Jundiaí (SBJD)</option>
+      <option value="SSUM">UMU – Umuarama (SSUM)</option>
+      <option value="SSGY">GGJ – Guaíra (SSGY)</option>
+      <option value="SBPO">PTO – Pato Branco (SBPO)</option>
+      <option value="SSCN">CEL – Canela (SSCN)</option>
+      <option value="SSSC">CSU – Santa Cruz do Sul (SSSC)</option>
+      <option value="SSLT">ALQ – Alegrete (SSLT)</option>
+      <option value="SBMQ">MCP – Macapá (SBMQ)</option>
+      <option value="SSZR">SRA – Santa Rosa (SSZR)</option>
+      <option value="SBBG">BGX – Bagé (SBBG)</option>
+      <option value="SSUV">UVI – União da Vitória (SSUV)</option>
+      <option value="SSVL">TEC – Telêmaco Borba (SSVL)</option>
+      <option value="SSGG">GPB – Guarapuava (SSGG)</option>
+      <option value="SBIH">ITB – Itaituba (SBIH)</option>
+      <option value="SBFN">FEN – Fernando de Noronha (SBFN)</option>
+      <option value="SBSO">SMT – Sorriso (SBSO)</option>
+      <option value="SBTB">TMT – Oriximiná (SBTB)</option>
+      <option value="SNMA">MTE – Monte Alegre (SNMA)</option>
+      <option value="SNCP">EEA – Correia Pinto (SNCP)</option>
+      <option value="SNOX">ORX – Oriximiná (SNOX)</option>
+      <option value="SNTI">OBI – Óbidos (SNTI)</option>
+      <option value="SNYA">GGF – Almeirim (SNYA)</option>
+      <option value="SWEI">ERN – Eirunepé (SWEI)</option>
+      <option value="SNMZ">PTQ – Porto de Moz (SNMZ)</option>
+      <option value="SBRB">RBR – Rio Branco (SBRB)</option>
+      <option value="SBMA">MAB – Marabá (SBMA)</option>
+      <option value="SBPJ">PMW – Palmas (SBPJ)</option>
+      <option value="SBPL">PNZ – Petrolina (SBPL)</option>
+      <option value="SBOI">OYK – Oiapoque (SBOI)</option>
+      <option value="SWTS">TGQ – Tangará da Serra (SWTS)</option>
+      <option value="SBBH">PLU – Belo Horizonte (SBBH)</option>
+      <option value="SBUG">URG – Uruguaiana (SBUG)</option>
+      <option value="SBVC">VDC – Vitória da Conquista (SBVC)</option>
+      <option value="SBSM">RIA – Santa Maria (SBSM)</option>
+      <option value="SBSI">OPS – Sinop (SBSI)</option>
+      <option value="SBCJ">CKS – Parauapebas (SBCJ)</option>
+      <option value="SBML">MII – Marília (SBML)</option>
+      <option value="SNGI">GNM – Guanambi (SNGI)</option>
+      <option value="SBCG">CGR – Campo Grande (SBCG)</option>
+      <option value="SBCH">XAP – Chapecó (SBCH)</option>
+      <option value="SBTT">TBT – Tabatinga (SBTT)</option>
+      <option value="SBLE">LEC – Lençóis (SBLE)</option>
+      <option value="SBGV">GVR – Governador Valadares (SBGV)</option>
+      <option value="SWKQ">NSR – São Raimundo Nonato (SWKQ)</option>
+      <option value="SBIZ">IMP – Imperatriz (SBIZ)</option>
+      <option value="SBTD">TOW – Toledo (SBTD)</option>
+      <option value="SWPI">PIN – Parintins (SWPI)</option>
+      <option value="SDIY">FEC – Feira de Santana (SDIY)</option>
+      <option value="SBPP">PMG – Ponta Porã (SBPP)</option>
+      <option value="SBCX">CXJ – Caxias Do Sul (SBCX)</option>
+      <option value="SNBR">BRA – Barreiras (SNBR)</option>
+      <option value="SBHT">ATM – Altamira (SBHT)</option>
+      <option value="SBRD">ROO – Rondonópolis (SBRD)</option>
+      <option value="SBAT">AFL – Alta Floresta (SBAT)</option>
+      <option value="SBUA">SJL – São Gabriel da Cachoeira (SBUA)</option>
+      <option value="SSKW">OAL – Cacoal (SSKW)</option>
+      <option value="SBVH">BVH – Vilhena (SBVH)</option>
+      <option value="SBCZ">CZS – Cruzeiro Do Sul (SBCZ)</option>
+      <option value="SDSC">QSC – São Carlos (SDSC)</option>
+      <option value="SBSJ">SJK – São José Dos Campos (SBSJ)</option>
+      <option value="SWCA">CAF – Carauari (SWCA)</option>
+      <option value="SBUY">RPU – Urucu (SBUY)</option>
+      <option value="SNTF">TXF – Teixeira de Freitas (SNTF)</option>
+      <option value="SWGN">AUX – Araguaína (SWGN)</option>
+      <option value="SBTU">TUR – Tucuruí (SBTU)</option>
+      <option value="SNRJ">JRT – Juruti (SNRJ)</option>
+      <option value="SDCO">SOD – Sorocaba (SDCO)</option>
+      <option value="SBBP">BJP – Bragança Paulista (SBBP)</option>
+      <option value="SBMT">RTE – São Paulo (SBMT)</option>
+      <option value="SDAG">GDR – Angra dos Reis (SDAG)</option>
+      <option value="SDCG">OLC – São Paulo De Olivença (SDCG)</option>
+      <option value="SBJF">JDF – Juiz de Fora (SBJF)</option>
+      <option value="SBMI">JMR – Maricá (SBMI)</option>
+      <option value="SJZA">CJZ – Cajazeiras (SJZA)</option>
+      <option value="SBAX">AAX – Araxá (SBAX)</option>
+      <option value="SNVB">VAL – Valença (SNVB)</option>
+      <option value="SBYS">QPS – Pirassununga (SBYS)</option>
+      <option value="SNJM">JMA – Manhuaçu (SNJM)</option>
+      <option value="SSBL">BNU – Blumenau (SSBL)</option>
+      <option value="SBMN">PLL – Manaus (SBMN)</option>
+      <option value="SDLO">PBA – Cairu (SDLO)</option>
+      <option value="SNLN">LHN – Linhares (SNLN)</option>
+      <option value="SN6L">JSO – Sobral (SN6L)</option>
+      <option value="SBCO">QNS – Porto Alegre (SBCO)</option>
+      <option value="SDOW">OIA – Ourilândia do Norte (SDOW)</option>
+      <option value="SBAQ">AQA – Araraquara (SBAQ)</option>
+      <option value="SNDV">DIQ – Divinópolis (SNDV)</option>
+      <option value="SBEK">JCR – Jacareacanga (SBEK)</option>
+      <option value="SNBA">BAT – Barretos (SNBA)</option>
+      <option value="SIMK">FRC – Franca (SIMK)</option>
+      <option value="SNBC">BDC – Barra do Corda (SNBC)</option>
+      <option value="SBIC">ITA – Itacoatiara (SBIC)</option>
+      <option value="SDTK">JPY – Paraty (SDTK)</option>
+      <option value="SNDC">RDC – Redenção (SNDC)</option>
+      <option value="SBJH">JHF – São Roque (SBJH)</option>
+      <option value="SNDT">DTI – Diamantina (SNDT)</option>
+      <option value="SBDO">DOU – Dourados (SBDO)</option>
+
+    </datalist>
+
+    <!-- AIRLINE OPTIONS -->
+
+    <datalist id="company-list">
+
+      <option value="AEB">Aero Benin (AEB)</option>
+      <option value="AMX">AeroMéxico (AMX)</option>
+      <option value="LNE">Aerolane (LNE)</option>
+      <option value="ARG">Aerolineas Argentinas (ARG)</option>
+      <option value="ABD">Air Atlanta Icelandic (ABD)</option>
+      <option value="ACA">Air Canada (ACA)</option>
+      <option value="CCA">Air China (CCA)</option>
+      <option value="AEA">Air Europa (AEA)</option>
+      <option value="AFR">Air France (AFR)</option>
+      <option value="ARE">Aires (ARE)</option>
+      <option value="AZN">Amaszonas (AZN)</option>
+      <option value="AAL">American Airlines (AAL)</option>
+      <option value="ARU">Aruba Airlines (ARU)</option>
+      <option value="GTI">Atlas Air (GTI)</option>
+      <option value="AVA">Avianca - Aerovias Nacionales de Colombia (AVA)</option>
+      <option value="AZU">Azul (AZU)</option>
+      <option value="BOV">Boliviana de Aviacion (OB) (BOV)</option>
+      <option value="BAW">British Airways (BAW)</option>
+      <option value="CFG">Condor Flugdienst (CFG)</option>
+      <option value="VCV">Conviasa (VCV)</option>
+      <option value="CMP">Copa Airlines (CMP)</option>
+      <option value="DAL">Delta Air Lines (DAL)</option>
+      <option value="MSR">Egyptair (MSR)</option>
+      <option value="UAE">Emirates (UAE)</option>
+      <option value="ETH">Ethiopian Airlines (ETH)</option>
+      <option value="EAL">European Air Express (EAL)</option>
+      <option value="GLO">Gol Transportes Aéreos (GLO)</option>
+      <option value="IBE">Iberia Airlines (IBE)</option>
+      <option value="ICE">Icelandair (ICE)</option>
+      <option value="KLM">KLM Royal Dutch Airlines (KLM)</option>
+      <option value="KAL">Korean Air (KAL)</option>
+      <option value="LAN">LAN Airlines (LAN)</option>
+      <option value="LPE">LAN Peru (LPE)</option>
+      <option value="LOT">LOT Polish Airlines (LOT)</option>
+      <option value="DLH">Lufthansa (DLH)</option>
+
+    </datalist>
+
+    <section id="about">
+
+      <h2>
+        Sobre o Projeto
+      </h2>
+
+      <p>
+        O Radar de Atrasos é uma aplicação de Machine Learning que estima a
+        probabilidade de atraso em voos utilizando dados públicos da ANAC.
+      </p>
+
+      <p>
+        O projeto utiliza regressão logística e XGBoost para modelagem,
+        além de SHAP para explicabilidade das previsões.
+      </p>
+
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+
+    <div class="container footer-content">
+
+      <div>
+        © 2026 Radar de Atrasos
+      </div>
+
+      <div>
+        Desenvolvido por Jessé Melo
+      </div>
+
+    </div>
+
+  </footer>
+
+</body>
+
+</html>
