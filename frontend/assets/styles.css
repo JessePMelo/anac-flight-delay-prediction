@@ -33,7 +33,7 @@ main {
 }
 
 .container {
-  max-width: 1000px;
+  max-width: 1080px;
   margin: 0 auto;
   padding: 24px;
 }
@@ -108,6 +108,7 @@ main {
   display: grid;
   grid-template-columns: 1fr 1.2fr;
   gap: 24px;
+  align-items: start;
 }
 
 
@@ -185,6 +186,14 @@ input:focus {
   outline: none;
   border-color: #3b5bdb;
   box-shadow: 0 0 0 3px rgba(59, 91, 219, 0.12);
+}
+
+input:hover {
+  border-color: #d6d2cb;
+}
+
+#results-area {
+  min-height: 220px;
 }
 
 
@@ -336,6 +345,7 @@ input:focus {
   margin-bottom: 8px;
 }
 
+
 /* =========================================================
    ESTADO VAZIO DE RESULTADOS
 ========================================================= */
@@ -377,17 +387,21 @@ input:focus {
 
 
 /* =========================================================
-   SEÇÃO INSTITUCIONAL
+   SEÇÕES INSTITUCIONAIS
 ========================================================= */
 
-#about {
+#about,
+#method,
+#disclaimer {
   max-width: 720px;
   margin: 70px auto 0 auto;
   text-align: justify;
   hyphens: auto;
 }
 
-#about h2 {
+#about h2,
+#method h2,
+#disclaimer h2 {
   font-size: 20px;
   font-weight: 600;
   margin-bottom: 14px;
@@ -395,8 +409,11 @@ input:focus {
   color: #111827;
 }
 
-#about p {
+#about p,
+#method p,
+#disclaimer p {
   margin-bottom: 14px;
+  line-height: 1.7;
 }
 
 
