@@ -274,35 +274,53 @@
     const translatedLabel =
       data.label === "Delayed" ? "Atrasado" : "No Horário";
 
-    selectedFactors.forEach(function (f) {
+   selectedFactors.forEach(function (f) {
 
-      const isIncrease = f.direction === "increase_delay";
-      const icon = isIncrease ? "↑" : "↓";
-      const colorClass = isIncrease ? "increase" : "decrease";
+  const isIncrease = f.direction === "increase_delay";
+  const icon = isIncrease ? "↑" : "↓";
+  const colorClass = isIncrease ? "increase" : "decrease";
 
-      const featureName = translateFeature(f.feature);
-      const formattedValue = formatFeatureValue(f.feature, f.value);
+  const featureName = translateFeature(f.feature);
+  const formattedValue = formatFeatureValue(f.feature, f.value);
 
-      const impactValue =
-        (isIncrease ? "aumenta risco" : "reduz risco") +
-        " (" + f.impact.toFixed(3) + ")";
+  const impactValue =
+    (isIncrease ? "aumenta risco" : "reduz risco") +
+    " (" + f.impact.toFixed(3) + ")";
 
-      let displayName = featureName;
+  let displayName = featureName;
 
-      if (f.feature === "is_holiday" || f.feature === "day_of_week") {
-        displayName =
-          featureName + ": " + formatFeatureValue(f.feature, f.value);
-      }
+  if (f.feature === "is_holiday") {
+    displayName =
+      featureName + ": " + formatFeatureValue(f.feature, f.value);
+  }
 
-      factorsHtml +=
-        '<div class="factor">' +
-        '<span>' + displayName + '</span>' +
-        '<span class="' + colorClass + '">' +
-        icon + " " + impactValue +
-        '</span>' +
-        '</div>';
+  if (f.feature === "day_of_week") {
 
-    });
+    const date = new Date(datetimeInput.value);
+
+    const days = [
+      "Domingo",
+      "Segunda-feira",
+      "Terça-feira",
+      "Quarta-feira",
+      "Quinta-feira",
+      "Sexta-feira",
+      "Sábado"
+    ];
+
+    displayName = featureName + ": " + days[date.getDay()];
+
+  }
+
+  factorsHtml +=
+    '<div class="factor">' +
+    '<span>' + displayName + '</span>' +
+    '<span class="' + colorClass + '">' +
+    icon + " " + impactValue +
+    '</span>' +
+    '</div>';
+
+});
 
     const badgeClass =
       data.label === "Delayed" ? "badge-delayed" : "badge-ontime";
