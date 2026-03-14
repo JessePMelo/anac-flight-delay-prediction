@@ -99,6 +99,38 @@ main {
   text-align: justify;
 }
 
+/* =========================================================
+   SECTION
+========================================================= */
+
+.section-text {
+  margin-top: 60px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e6e0d8;
+  text-align: center;
+}
+
+.section-text h2 {
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+  color: #6b7280;
+  margin-bottom: 12px;
+}
+
+.section-text p {
+  font-size: 16px;
+  font-weight: 400;
+  color: #374151;
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: justify;
+}
+
+.section-text + .section-text {
+  margin-top: 40px;
+}
 
 /* =========================================================
    LAYOUT PRINCIPAL
