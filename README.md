@@ -138,24 +138,26 @@ Prediction Interface
 
 ## Project Structure
 
+## Project Structure
+
 anac-flight-delay-predictor/
 
 backend/
-  model/
-  services/
+  model/        # serialized models used by the API
+  services/     # prediction and processing services
 
 data_science/
-  artifacts/
+  artifacts/    # generated artifacts from experiments
   data/
-    raw/
-    processed/
-    sampled/
-  model/
-  notebooks/
-  src/
+    raw/        # original ANAC datasets
+    processed/  # cleaned datasets
+    sampled/    # sampled datasets for experiments
+  model/        # training scripts and model utilities
+  notebooks/    # exploratory analysis and experiments
+  src/          # data processing and feature engineering
 
 frontend/
-  assets/
+  assets/       # static files used by the interface
 
 requirements.txt
 README.md
