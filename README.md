@@ -184,7 +184,7 @@ Core scripts used for data processing and model training.
 
 Clone the repository
 
-git clone https://github.com/your-repository
+git clone [https://github.com/your-repository](https://github.com/JessePMelo/anac-flight-delay-prediction.git)
 
 Install dependencies
 
