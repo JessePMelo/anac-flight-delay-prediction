@@ -117,26 +117,6 @@ Target variable:
 |---------|-------------|
 | delayed | Binary variable indicating whether the flight departed late |
 
-
-# Pipeline Diagram
-
-Data Collection (ANAC)
-↓
-Data Cleaning
-↓
-Feature Engineering
-↓
-Feature Selection
-↓
-Model Training (Logistic Regression / Random Forest / XGBoost)
-↓
-Model Evaluation
-↓
-SHAP Explainability
-↓
-Prediction Interface
-
-
 # Technologies Used
 
 - Python
