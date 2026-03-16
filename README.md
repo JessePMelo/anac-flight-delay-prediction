@@ -26,7 +26,7 @@ The final system includes:
 The system architecture integrates the prediction interface, backend services and the machine learning model responsible for estimating flight delays.
 
 <p align="center">
-  <img src="docs/architecture.png" style="width:35%;">
+  <img src="docs/architecture.png" style="width:15%;">
 </p>
 
 # Live Prediction Interface
