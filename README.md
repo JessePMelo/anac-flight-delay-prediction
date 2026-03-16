@@ -1,9 +1,9 @@
 # Radar de Atrasos ✈️
 Predicting Flight Delays in Brazil using Machine Learning and ANAC aviation data.
 
-This project analyzes Brazilian flight operational data to identify patterns associated with delays and build predictive models capable of estimating the probability of a flight departing late.
+![Radar de Atrasos Interface](docs/interface.png)
 
-The system also provides explainability using SHAP to highlight the most influential factors behind each prediction.
+This project analyzes Brazilian flight operational data to identify patterns associated with delays and build predictive models capable of estimating the probability of a flight departing late.
 
 
 # Project Overview
@@ -19,6 +19,11 @@ The final system includes:
 - Delay prediction interface
 - Model explainability using SHAP
 
+# Architecture Overview
+
+The system architecture integrates the prediction interface, backend services and the machine learning model responsible for estimating flight delays.
+
+![Architecture Diagram](docs/architecture.png)
 
 # Live Prediction Interface
 
