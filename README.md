@@ -24,23 +24,14 @@ The final system includes:
 # Architecture Overview
 
 The system architecture integrates the prediction interface, backend services and the machine learning model responsible for estimating flight delays.
-
-ANAC Dataset
-↓
-Data Cleaning
-↓
-Feature Engineering
-↓
-Feature Selection
-↓
-Model Training
-(Logistic Regression / Random Forest / XGBoost)
-↓
-Model Evaluation
-↓
-SHAP Explainability
-↓
-Prediction Interface
+1. ANAC Dataset  
+2. Data Cleaning  
+3. Feature Engineering  
+4. Feature Selection  
+5. Model Training (Logistic Regression / Random Forest / XGBoost)  
+6. Model Evaluation  
+7. SHAP Explainability  
+8. Prediction Interface
 
 # Live Prediction Interface
 
