@@ -117,6 +117,17 @@ Target variable:
 |---------|-------------|
 | delayed | Binary variable indicating whether the flight departed late |
 
+# Key Insights
+
+Analysis of the ANAC flight dataset revealed several patterns associated with flight delays:
+
+- Flights scheduled during early morning waves show increased delay probability due to accumulated operational constraints.
+- High route traffic volume increases the likelihood of departure delays.
+- Some airlines demonstrate consistently lower delay rates, suggesting operational efficiency differences.
+- Holiday proximity and peak travel periods contribute to increased delay risk.
+
+These insights highlight the importance of operational context when modeling flight delays and demonstrate how machine learning can support decision making in aviation operations.
+
 # Technologies Used
 
 - Python
