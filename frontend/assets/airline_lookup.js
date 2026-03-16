@@ -249,15 +249,3 @@ Nomes das companhias
 /* Freeze lookup */
 
 const airlineLookup = Object.freeze(_airlineLookup);
-
-/* =========================================================
-Normalize airline input
-========================================================= */
-
-function normalizeAirline(value) {
-
-  const key = value?.trim().toUpperCase();
-
-  return airlineLookup[key] ?? value;
-
-}
