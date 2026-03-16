@@ -1,7 +1,8 @@
 # Radar de Atrasos ✈️
-Predicting Flight Delays in Brazil using Machine Learning and ANAC aviation data.
 
-🌐 **Live Demo:** http://92.246.128.191/
+Machine Learning system that predicts flight departure delays in Brazil using ANAC aviation data and provides model explainability through SHAP.
+
+🌐 **Live Demo:** [Radar de Atrasos](http://92.246.128.191/)
 
 <p align="center">
   <img src="docs/interface.png" width="750">
