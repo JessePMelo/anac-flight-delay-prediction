@@ -136,28 +136,29 @@ Prediction Interface
 
 # Project Structure
 
+## Project Structure
+
 anac-flight-delay-predictor/
-│
-├── backend/
-│   ├── model/
-│   └── services/
-│
-├── data_science/
-│   ├── artifacts/
-│   ├── data/
-│   │   ├── raw/
-│   │   ├── processed/
-│   │   └── sampled/
-│   │
-│   ├── model/
-│   ├── notebooks/
-│   └── src/
-│
-├── frontend/
-│   └── assets/
-│
-├── requirements.txt
-└── README.md
+
+backend/
+  model/
+  services/
+
+data_science/
+  artifacts/
+  data/
+    raw/
+    processed/
+    sampled/
+  model/
+  notebooks/
+  src/
+
+frontend/
+  assets/
+
+requirements.txt
+README.md
 
 backend/
 API logic and services responsible for running predictions.
@@ -184,7 +185,7 @@ Core scripts used for data processing and model training.
 
 Clone the repository
 
-git clone [https://github.com/your-repository](https://github.com/JessePMelo/anac-flight-delay-prediction.git)
+git clone https://github.com/JessePMelo/anac-flight-delay-prediction.git
 
 Install dependencies
 
