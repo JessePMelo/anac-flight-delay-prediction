@@ -289,7 +289,7 @@
 
   let displayName = featureName;
 
-  if (f.feature === "is_holiday") {
+  if (f.feature.startsWith("is_")) {
     displayName =
       featureName + ": " + formatFeatureValue(f.feature, f.value);
   }
