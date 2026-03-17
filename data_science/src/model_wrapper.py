@@ -1,4 +1,3 @@
-
 import joblib
 import shap
 import numpy as np
@@ -102,10 +101,15 @@ class FlightDelayPredictor:
             if "hour_sin" in feature_name or "hour_cos" in feature_name:
                 continue
 
-            top_features.append({
+            feature_data = {
                 "feature": feature_name,
                 "impact": float(values[i])
-            })
+            }
+
+            if feature_name.startswith("is_"):
+                feature_data["value"] = float(X_transformed[0][i])
+
+            top_features.append(feature_data)
 
             if len(top_features) >= top_n:
                 break
