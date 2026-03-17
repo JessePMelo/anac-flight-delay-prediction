@@ -1,10 +1,12 @@
 # Radar de Atrasos ✈️
-Predicting Flight Delays in Brazil using Machine Learning and ANAC aviation data.
 
-This project analyzes Brazilian flight operational data to identify patterns associated with delays and build predictive models capable of estimating the probability of a flight departing late.
+Machine Learning system that predicts flight departure delays in Brazil using ANAC aviation data and provides model explainability through SHAP.
 
-The system also provides explainability using SHAP to highlight the most influential factors behind each prediction.
+🌐 **Live Demo:** [Radar de Atrasos](http://92.246.128.191/)
 
+<p align="center">
+  <img src="docs/interface.png" width="750">
+</p>
 
 # Project Overview
 
@@ -19,6 +21,17 @@ The final system includes:
 - Delay prediction interface
 - Model explainability using SHAP
 
+# Architecture Overview
+
+The system architecture integrates the prediction interface, backend services and the machine learning model responsible for estimating flight delays.
+1. ANAC Dataset  
+2. Data Cleaning  
+3. Feature Engineering  
+4. Feature Selection  
+5. Model Training (Logistic Regression / Random Forest / XGBoost)  
+6. Model Evaluation  
+7. SHAP Explainability  
+8. Prediction Interface
 
 # Live Prediction Interface
 
@@ -104,25 +117,16 @@ Target variable:
 |---------|-------------|
 | delayed | Binary variable indicating whether the flight departed late |
 
+# Key Insights
 
-# Pipeline Diagram
+Analysis of the ANAC flight dataset revealed several patterns associated with flight delays:
 
-Data Collection (ANAC)
-↓
-Data Cleaning
-↓
-Feature Engineering
-↓
-Feature Selection
-↓
-Model Training (Logistic Regression / Random Forest / XGBoost)
-↓
-Model Evaluation
-↓
-SHAP Explainability
-↓
-Prediction Interface
+- Flights scheduled during early morning waves show increased delay probability due to accumulated operational constraints.
+- High route traffic volume increases the likelihood of departure delays.
+- Some airlines demonstrate consistently lower delay rates, suggesting operational efficiency differences.
+- Holiday proximity and peak travel periods contribute to increased delay risk.
 
+These insights highlight the importance of operational context when modeling flight delays and demonstrate how machine learning can support decision making in aviation operations.
 
 # Technologies Used
 
