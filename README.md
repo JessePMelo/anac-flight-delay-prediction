@@ -141,49 +141,75 @@ These insights highlight the importance of operational context when modeling fli
 # Project Structure
 
 ```
-anac-flight-delay-predictor/
+.
+├── .git                # Version control (Git)
+├── .gitignore          # Files ignored by Git
+├── CONTRACT.md         # Project scope and rules
+├── LICENSE             # Project license
+├── README.md           # Main documentation
 
-backend/
-  model/
-  services/
+├── backend             # API and backend logic
+│   ├── model
+│   │   ├── historical_stats_v5.pkl  # Precomputed statistics
+│   │   └── xgb_pipeline.pkl         # Trained model (XGBoost)
+│   └── services
+│       └── model_wrapper.py         # Model interface for the API
 
-data_science/
-  artifacts/
-  data/
-    raw/
-    processed/
-    sampled/
-  model/
-  notebooks/
-  src/
+├── data_science        # Data analysis and model training
+│   ├── data
+│   │   ├── processed
+│   │   │   ├── airports.csv         # Airport dataset
+│   │   │   ├── geollicalizacao_lat_lon_codigo_aeroporto.csv  # Airport coordinates
+│   │   │   ├── importance_nonzero_xgb.csv  # Feature importance (non-zero)
+│   │   │   ├── model_df_clean.parquet     # Cleaned dataset
+│   │   │   └── vra_anac_2023_2025.parquet # Processed raw flight data
+│   │   └── sampled
+│   │       └── sample_df.parquet    # Sampled dataset
+│   ├── model
+│   │   ├── historical_stats_v5.pkl  # Model artifacts (replicated)
+│   │   └── xgb_pipeline.pkl
+│   ├── notebooks
+│   │   └── 01_exploratory_data_analysis_anac.ipynb  # Exploratory Data Analysis (EDA)
+│   └── src
+│       └── model_wrapper.py        # Reusable model logic
 
-frontend/
-  assets/
+├── docs                # Technical and visual documentation
+│   ├── architecture.png  # System architecture diagram
+│   ├── crisp.md          # CRISP-DM methodology documentation
+│   └── interface.png     # User interface preview
 
-requirements.txt
-README.md
+├── frontend            # User interface (client-side)
+│   ├── assets
+│   │   ├── airline_lookup.js  # Airline lookup logic
+│   │   ├── airport_lookup.js  # Airport lookup logic
+│   │   ├── script.js          # Main frontend logic
+│   │   └── styles.css         # Styling
+│   └── index.html             # Main HTML entry point
+└── requirements.txt    # Project dependencies
 ```
-
 backend/
-API logic and services responsible for running predictions.
+Handles the API layer, exposing endpoints for model inference and integrating trained models into a production-ready service.
 
 data_science/
-Data analysis, feature engineering, model training and experimentation.
+Contains the full data pipeline, including data cleaning, feature engineering, exploratory analysis, and model development.
 
 frontend/
-User interface used to simulate flight conditions and visualize predictions.
+Provides the user interface to simulate flight scenarios and interact with the prediction system.
 
-artifacts/
-Saved objects such as trained models or intermediate outputs.
+docs/
+Project documentation, including architecture diagrams, methodology (CRISP-DM), and interface previews.
 
 data/
-Datasets used in the project.
+Stores raw, processed, and sampled datasets used throughout the project lifecycle.
 
 notebooks/
-Exploratory analysis and modeling notebooks.
+Jupyter notebooks for exploratory data analysis (EDA), experimentation, and validation of modeling approaches.
 
 src/
-Core scripts used for data processing and model training.
+Reusable scripts and modules for data processing, feature engineering, and model training logic.
+
+model/ (or artifacts/)
+Serialized model files and precomputed data (e.g., trained pipelines, feature statistics) used for inference.
 
 # How to Run
 
